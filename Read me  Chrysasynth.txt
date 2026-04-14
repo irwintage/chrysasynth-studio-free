@@ -1,0 +1,98 @@
+ 🎛️ Chrysasynth
+
+Chrysasynth is a web-based musical instrument designed to explore grooves, basslines and melodies through an intuitive and immersive interface.
+
+It is not a traditional DAW, but a focused creative tool built to encourage fast experimentation and musical flow.
+
+---
+
+✨ Overview
+
+Chrysasynth provides a minimal yet expressive environment where rhythm, harmony and texture evolve in real time.
+
+The system combines structured sequencing with controlled variation to create a feeling of a "living track", without breaking musical coherence.
+
+---
+
+ ⚙️ Features
+
+- Drum sequencing (Kick, Snare, Hat, Clap)
+- Bass engine with A/B pattern logic
+- Melody generator with controlled variation
+- Auto Evolve system (subtle musical transformations)
+- Session saving (Seeds)
+- Real-time parameter control (BPM, Swing, Scale)
+- Visual feedback and interactive UI
+
+---
+
+ 🎧 Philosophy
+
+Chrysasynth is designed around a simple idea:
+
+> Music creation should be immediate, fluid, and inspiring.
+
+Instead of overwhelming the user with options, it focuses on:
+- clarity
+- responsiveness
+- musical coherence
+
+---
+
+ 💻 Platform
+
+Optimized for:
+- Desktop
+- Laptop
+- Tablet (landscape)
+
+Not optimized for mobile devices.
+
+---
+
+ 📦 PWA
+
+Chrysasynth can be installed as a Progressive Web App:
+- offline support
+- standalone mode
+- app-like experience
+
+---
+
+ ⚠️ Usage & Rights
+
+This project is provided for **personal, educational, and experimental use only**.
+
+All design, code structure, interaction logic, and visual identity are the intellectual property of the author.
+
+You may:
+- use the tool
+- explore the code for learning purposes
+
+You may NOT:
+- redistribute the project
+- copy or reuse significant parts of the code
+- replicate the interface or concept for commercial use
+- create derivative products based on Chrysasynth
+
+without explicit permission.
+
+---
+
+ 🛡️ Disclaimer
+
+This project is provided "as is", without warranty of any kind.
+
+The author is not responsible for any misuse, data loss, or unintended behavior resulting from the use of this software.
+
+---
+
+ 🧑‍🎨 Author
+
+Created by Irwin Otian
+
+---
+
+ 📜 License
+
+All rights reserved.
