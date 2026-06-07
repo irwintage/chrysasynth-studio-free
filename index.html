@@ -1683,11 +1683,10 @@ input[type=range]::-moz-range-thumb{
         <div class="axis-top">
           <div class="axis-controls">
             <select id="bassOsc">
-              <option value="sawtooth" selected>Saw</option>
-              <option value="square">Square</option>
-              <option value="triangle">Triangle</option>
-              <option value="sine">Sine</option>
-            </select>
+  <option value="warm" selected>Warm</option>
+  <option value="pulse">Pulse</option>
+  <option value="acid">Acid</option>
+</select>
           </div>
 
           <div style="display:flex;gap:8px;flex-wrap:wrap">
@@ -1961,7 +1960,8 @@ evolveMemory: {
   },
 
   bass:{
-    osc:"sawtooth",
+  osc:"sawtooth",
+  character:"warm",
     drive:0.18,
     cutoff:0.52,
     reverb:0.16,
@@ -2054,27 +2054,27 @@ bassFilter = new Tone.Filter({
 
 bassSynth = new Tone.MonoSynth({
   oscillator:{type:state.bass.osc},
-  envelope:{
-    attack:0.001,
-    decay:0.14,
-    sustain:0.0,
-    release:0.08
-  },
-  filter:{
-    type:"lowpass",
-    frequency:900,
-    Q:8,
-    rolloff:-24
-  },
-  filterEnvelope:{
-    attack:0.001,
-    decay:0.16,
-    sustain:0,
-    release:0.05,
-    baseFrequency:220,
-    octaves:4.6,
-    exponent:2
-  },
+ envelope:{
+  attack:0.012,
+  decay:0.30,
+  sustain:0.65,
+  release:0.28
+},
+ filter:{
+  type:"lowpass",
+  frequency:1200,
+  Q:1.2,
+  rolloff:-24
+},
+ filterEnvelope:{
+  attack:0.008,
+  decay:0.22,
+  sustain:0.18,
+  release:0.18,
+  baseFrequency:180,
+  octaves:2.2,
+  exponent:2
+},
   portamento:state.bass.glide
 });
 
@@ -2555,15 +2555,21 @@ function randomizeDrumWithStyle(dir){
 }
 
 function randomizeBassWithStyle(dir){
-  const oscMap = {
-    anchor:["sawtooth","triangle"],
-    deep:["triangle","sine"],
-    moving:["sawtooth","square"],
-    minimal:["triangle","sine"],
-    soft:["triangle","sine"],
-    cycle:["sawtooth","triangle","square"]
+  const characterMap = {
+    anchor:["warm"],
+    deep:["warm"],
+    moving:["pulse"],
+    minimal:["warm"],
+    soft:["warm"],
+    cycle:["pulse","acid"]
   };
-  state.bass.osc = pick(oscMap[dir.bass] || ["sawtooth","triangle"]);
+
+  state.bass.character = pick(characterMap[dir.bass] || ["warm"]);
+
+  if(state.bass.character === "warm") state.bass.osc = "triangle";
+  if(state.bass.character === "pulse") state.bass.osc = "triangle";
+  if(state.bass.character === "acid") state.bass.osc = "sawtooth";
+
   const patt = buildBassPattern(dir.bass);
   state.bass.patternA = patt.a;
   state.bass.patternB = patt.b;
@@ -3093,7 +3099,7 @@ function syncControlsFromState(){
 
   updateModuleVisuals();
 
-  $("bassOsc").value = state.bass.osc;
+ $("bassOsc").value = state.bass.character || "warm";
   $("bassDrive").value = state.bass.drive;
   $("bassCutoff").value = state.bass.cutoff;
   $("bassReverb").value = state.bass.reverb;
@@ -3242,36 +3248,129 @@ function bindControls(){
     state.bass.playMode = "AB";
     renderBass(step);
   };
+function applyBassCharacter(){
+  if(!audioReady || !bassSynth) return;
 
-  $("bassOsc").onchange = e => {
-    state.bass.osc = e.target.value;
-    if(audioReady) bassSynth.oscillator.type = state.bass.osc;
-  };
-  $("bassDrive").oninput = e => {
-    state.bass.drive = Number(e.target.value);
-    renderBass(step);
-    if(audioReady) bassDrive.distortion = state.bass.drive;
-  };
-  $("bassCutoff").oninput = e => {
-    state.bass.cutoff = Number(e.target.value);
-    renderBass(step);
-    if(audioReady) bassFilter.frequency.rampTo(200 + state.bass.cutoff * 5000, 0.05);
-  };
-  $("bassReverb").oninput = e => {
-    state.bass.reverb = Number(e.target.value);
-    renderBass(step);
-    if(audioReady) bassVerb.wet.rampTo(state.bass.reverb, 0.05);
-  };
-  $("bassGlide").oninput = e => {
-    state.bass.glide = Number(e.target.value) * 0.12;
-    renderBass(step);
-    if(audioReady) bassSynth.portamento = state.bass.glide;
-  };
-  $("bassPump").oninput = e => {
-    state.bass.pump = Number(e.target.value);
-    renderBass(step);
-  };
+  const c = state.bass.character || "warm";
 
+  if(c === "warm"){
+    state.bass.osc = "triangle";
+
+    bassSynth.set({
+      oscillator:{type:"triangle"},
+      envelope:{
+        attack:0.018,
+        decay:0.34,
+        sustain:0.72,
+        release:0.36
+      },
+      filterEnvelope:{
+        attack:0.012,
+        decay:0.28,
+        sustain:0.20,
+        release:0.22,
+        baseFrequency:160,
+        octaves:1.6,
+        exponent:2
+      },
+      portamento:0.025
+    });
+
+    bassFilter.Q.rampTo(1.2, 0.05);
+    bassFilter.frequency.rampTo(220 + state.bass.cutoff * 900, 0.05);
+    bassDrive.distortion = 0.04 + state.bass.drive * 0.10;
+  }
+
+  if(c === "pulse"){
+    state.bass.osc = "sawtooth";
+
+    bassSynth.set({
+      oscillator:{type:"sawtooth"},
+      envelope:{
+        attack:0.006,
+        decay:0.22,
+        sustain:0.42,
+        release:0.18
+      },
+      filterEnvelope:{
+        attack:0.004,
+        decay:0.18,
+        sustain:0.08,
+        release:0.12,
+        baseFrequency:220,
+        octaves:2.6,
+        exponent:2
+      },
+      portamento:0.045
+    });
+
+    bassFilter.Q.rampTo(2.8, 0.05);
+    bassFilter.frequency.rampTo(280 + state.bass.cutoff * 1600, 0.05);
+    bassDrive.distortion = 0.10 + state.bass.drive * 0.18;
+  }
+
+  if(c === "acid"){
+    state.bass.osc = "sawtooth";
+
+    bassSynth.set({
+      oscillator:{type:"sawtooth"},
+      envelope:{
+        attack:0.002,
+        decay:0.14,
+        sustain:0.08,
+        release:0.10
+      },
+      filterEnvelope:{
+        attack:0.001,
+        decay:0.16,
+        sustain:0,
+        release:0.06,
+        baseFrequency:240,
+        octaves:4.2,
+        exponent:2
+      },
+      portamento:0.085
+    });
+
+    bassFilter.Q.rampTo(7.5, 0.05);
+    bassFilter.frequency.rampTo(320 + state.bass.cutoff * 2600, 0.05);
+    bassDrive.distortion = 0.20 + state.bass.drive * 0.35;
+  }
+}
+$("bassOsc").onchange = e => {
+  state.bass.character = e.target.value;
+  applyBassCharacter();
+  syncControlsFromState();
+};
+
+$("bassDrive").oninput = e => {
+  state.bass.drive = Number(e.target.value);
+  renderBass(step);
+  applyBassCharacter();
+};
+
+$("bassCutoff").oninput = e => {
+  state.bass.cutoff = Number(e.target.value);
+  renderBass(step);
+  applyBassCharacter();
+};
+
+$("bassReverb").oninput = e => {
+  state.bass.reverb = Number(e.target.value);
+  renderBass(step);
+  if(audioReady) bassVerb.wet.rampTo(state.bass.reverb, 0.05);
+};
+
+$("bassGlide").oninput = e => {
+  state.bass.glide = Number(e.target.value) * 0.12;
+  renderBass(step);
+  applyBassCharacter();
+};
+
+$("bassPump").oninput = e => {
+  state.bass.pump = Number(e.target.value);
+  renderBass(step);
+};
   $("melVoice").onchange = e => {
     state.melody.voice = e.target.value;
   };
