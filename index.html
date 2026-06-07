@@ -1540,6 +1540,43 @@ input[type=range]::-moz-range-thumb{
     background:linear-gradient(135deg,var(--cy),var(--vi));
   }
 }
+  @media (max-width:720px){
+  .modules{
+    display:block;
+  }
+
+  #drumPanel,
+  #bassPanel,
+  #melodyPanel,
+  .library{
+    display:none;
+  }
+
+  body.mobile-seeds .library{
+    display:flex;
+  }
+
+  body.mobile-drum #drumPanel{
+    display:flex;
+  }
+
+  body.mobile-bass #bassPanel{
+    display:flex;
+  }
+
+  body.mobile-melody #melodyPanel{
+    display:flex;
+  }
+
+  #drumPanel,
+  #bassPanel,
+  #melodyPanel,
+  .library{
+    width:100%;
+    max-width:none;
+    margin-top:14px;
+  }
+}
 </style>
 </head>
 <body>
@@ -3574,6 +3611,26 @@ if ("serviceWorker" in navigator) {
     });
   });
 }
+  document.querySelectorAll("[data-mobile-page]").forEach(btn=>{
+  btn.onclick = ()=>{
+    const page = btn.dataset.mobilePage;
+
+    document.body.classList.remove(
+      "mobile-seeds",
+      "mobile-drum",
+      "mobile-bass",
+      "mobile-melody"
+    );
+
+    document.body.classList.add(`mobile-${page}`);
+
+    document.querySelectorAll("[data-mobile-page]").forEach(b=>{
+      b.classList.toggle("active", b === btn);
+    });
+  };
+});
+
+document.body.classList.add("mobile-seeds");
 </script>
 <div id="premiumGate" class="premium-gate hidden">
   <div class="premium-gate-card">
