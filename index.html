@@ -1577,6 +1577,111 @@ input[type=range]::-moz-range-thumb{
     margin-top:14px;
   }
 }
+  @media (max-width:720px){
+
+  html,body{
+    height:auto;
+    min-height:100vh;
+    overflow-x:hidden;
+    overflow-y:auto;
+  }
+
+  .app{
+    width:100%;
+    padding:12px 10px 90px;
+    gap:10px;
+  }
+
+  .topbar{
+    padding:10px;
+    border-radius:18px;
+  }
+
+  .topbar-grid{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+
+  .top-left{
+    order:2;
+    justify-content:center;
+  }
+
+  .top-center{
+    order:1;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    width:100%;
+  }
+
+  .top-center .btn{
+    width:100%;
+    min-width:0;
+  }
+
+  .top-right{
+    order:3;
+    align-items:center;
+  }
+
+  .brand-right{
+    justify-content:center;
+    margin-left:0;
+  }
+
+  .brand-title{
+    font-size:20px;
+  }
+
+  .mobile-tabs{
+    position:sticky;
+    top:8px;
+    z-index:50;
+    margin:8px 0 12px;
+  }
+
+  .modules{
+    display:block !important;
+  }
+
+  #drumPanel,
+  #bassPanel,
+  #melodyPanel,
+  .library{
+    display:none !important;
+    width:100% !important;
+    max-width:none !important;
+    grid-column:auto !important;
+    grid-row:auto !important;
+    margin:0 !important;
+  }
+
+  body.mobile-seeds .library{
+    display:flex !important;
+  }
+
+  body.mobile-drum #drumPanel{
+    display:flex !important;
+  }
+
+  body.mobile-bass #bassPanel{
+    display:flex !important;
+  }
+
+  body.mobile-melody #melodyPanel{
+    display:flex !important;
+  }
+
+  .panel,
+  .library{
+    border-radius:20px;
+  }
+
+  .panel:nth-child(2){
+    min-height:0;
+  }
+}
 </style>
 </head>
 <body>
