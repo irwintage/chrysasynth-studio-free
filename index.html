@@ -1512,7 +1512,34 @@ input[type=range]::-moz-range-thumb{
 .premium-gate-actions .btn.secondary:hover{
   opacity:0.85;
 }
+.mobile-tabs{
+  display:none;
+}
 
+@media (max-width:720px){
+
+  .mobile-tabs{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:6px;
+    margin:10px 0;
+  }
+
+  .mobile-tabs button{
+    height:36px;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,0.12);
+    background:rgba(255,255,255,0.04);
+    color:var(--muted);
+    font-size:10px;
+    font-weight:700;
+  }
+
+  .mobile-tabs button.active{
+    color:#071018;
+    background:linear-gradient(135deg,var(--cy),var(--vi));
+  }
+}
 </style>
 </head>
 <body>
